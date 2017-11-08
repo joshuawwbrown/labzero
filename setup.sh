@@ -62,3 +62,5 @@ echo -e "\n\n*** Adding Shortcuts"
 echo -e "\n\nalias zero=\"su - zero\"\n" >> .profile
 
 echo -e "\n*** Setup complete ***\n"
+
+. .profile
