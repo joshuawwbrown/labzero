@@ -2,4 +2,4 @@
 
 These are support files for Linux Quick Setup
 
-https://github.com/joshuawwbrown/labzero/wiki/LabZero-DevOps-Wiki
+https://github.com/joshuawwbrown/labzero/wiki
