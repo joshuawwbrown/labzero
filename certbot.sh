@@ -6,4 +6,4 @@ mv /etc/nginx/sites-available/default /etc/nginx/sites-available/old
 cp /root/labzero/nginxNominal /etc/nginx/sites-available/default
 cp /root/labzero/dhparam.pem /etc/ssl/dhparam.pem
 
-servic nginx restart
+service nginx restart
