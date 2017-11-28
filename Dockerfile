@@ -29,7 +29,7 @@ RUN n stable
 RUN npm install -g gulp
 RUN npm install -g nodemon
 
-ADD nginx.conf /etc/nginx/sites-enabled/default
+ADD dockerNginxConfig /etc/nginx/sites-enabled/default
 
 RUN service nginx start
 
