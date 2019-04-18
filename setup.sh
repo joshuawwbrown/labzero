@@ -47,8 +47,8 @@ apt-get install -y build-essential
 
 echo -e "\n\n*** CERTBOT & SSL \n"
 
-add-apt-repository ppa:certbot/certbot
-apt-get update
+add-apt-repository -y ppa:certbot/certbot
+apt-get -y update
 apt-get -y install certbot
 
 cp /root/labzero/timeStamp.sh /root
