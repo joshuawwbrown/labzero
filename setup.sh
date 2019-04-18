@@ -45,17 +45,17 @@ apt-get install -y git-core;
 apt-get install -y libssl-dev;
 apt-get install -y build-essential
 
-echo -e "\n\n*** CERTBOT & SSL \n"
+echo -e "\n\n*** CERTBOT & SSL\n"
 
 add-apt-repository -y ppa:certbot/certbot
 apt-get -y update
 apt-get -y install certbot
 
 cp /root/labzero/timeStamp.sh /root
+chmod a+x /root/timeStamp.sh
 cp /root/labzero/dhparam.pem /etc/ssl/dhparam.pem
 
-
-echo -e "\n\n*** Creating Users and Groups"
+echo -e "\n\n*** Creating Users and Groups\n"
 groupadd zero
 useradd -s /bin/bash -m -g zero zero
 useradd -s /bin/bash -M -g zero zero-server
@@ -68,7 +68,7 @@ chmod 700 /home/zero/.ssh
 chmod 600 /home/zero/.ssh/authorized_keys
 su -c "ssh-keygen -t rsa -N \"\" -f ~/.ssh/id_rsa" -s /bin/sh zero
 
-echo -e "\n\n*** Adding Shortcuts"
+echo -e "\n\n*** Adding Profile Shortcuts\n"
 echo -e "\n\nalias zero=\"su - zero\"\n" >> .profile
 
 echo -e "\n*** Setup complete ***\n"
