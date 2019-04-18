@@ -45,6 +45,16 @@ apt-get install -y git-core;
 apt-get install -y libssl-dev;
 apt-get install -y build-essential
 
+echo -e "\n\n*** CERTBOT & SSL \n"
+
+add-apt-repository ppa:certbot/certbot
+apt-get update
+apt-get -y install certbot
+
+cp /root/labzero/timeStamp.sh /root
+cp /root/labzero/dhparam.pem /etc/ssl/dhparam.pem
+
+
 echo -e "\n\n*** Creating Users and Groups"
 groupadd zero
 useradd -s /bin/bash -m -g zero zero
