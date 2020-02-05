@@ -1,0 +1,12 @@
+apt install libpam0g-dev libselinux1-dev
+
+wget -c https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-8.0p1.tar.gz
+tar -xzf openssh-8.0p1.tar.gz
+cd openssh-8.0p1/
+
+./configure --with-md5-passwords --with-pam --with-selinux --with-privsep-path=/var/lib/sshd/ --sysconfdir=/etc/ssh
+make
+make install
+
+mv /usr/sbin/sshd
+cp /usr/local/sbin/sshd /usr/sbin/
