@@ -8,5 +8,5 @@ cd openssh-8.0p1/
 make
 make install
 
-mv /usr/sbin/sshd
+mv /usr/sbin/sshd /usr/sbin/sshd_old
 cp /usr/local/sbin/sshd /usr/sbin/
