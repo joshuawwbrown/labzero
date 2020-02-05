@@ -8,7 +8,7 @@ echo 'deb-src http://nginx.org/packages/mainline/ubuntu/ bionic nginx' >> /etc/a
 cat /etc/apt/sources.list.d/nginx.list
 
 wget http://nginx.org/keys/nginx_signing.key
-apt-key -y add nginx_signing.key
+apt-key add nginx_signing.key
 apt -y update
 apt -y remove nginx nginx-common nginx-full nginx-core
 
