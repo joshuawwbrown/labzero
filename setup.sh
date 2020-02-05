@@ -66,6 +66,19 @@ cp /root/labzero/timeStamp.sh /root
 chmod a+x /root/timeStamp.sh
 cp /root/labzero/dhparam.pem /etc/ssl/dhparam.pem
 
+echo -e "\n\n*** Installing NPM, NODE, PM2\n"
+
+apt-get install -y npm
+npm install -g n
+n stable
+
+npm install -g gulp
+npm install -g nodemon
+
+npm install pm2@latest -g
+pm2 unstartup
+pm2 startup ubuntu -u zero --hp /home/zero
+
 echo -e "\n\n*** Creating Users and Groups\n"
 groupadd zero
 useradd -s /bin/bash -m -g zero zero
