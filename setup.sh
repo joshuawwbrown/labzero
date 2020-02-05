@@ -40,6 +40,8 @@ apt -y remove nginx nginx-common nginx-full nginx-core
 apt -y install nginx
 nginx -v
 
+cp /root/labzero/dhparam.pem /etc/ssl/dhparam.pem
+
 echo -e "\n\n*** AUTO_UPDATES\n"
 apt install -y unattended-upgrades
 echo 'APT::Periodic::Update-Package-Lists "1";
