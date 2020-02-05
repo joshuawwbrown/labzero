@@ -1,17 +1,5 @@
-echo -e "\n\n*** Installing NPM, NODE, PM2, and MongoDB\n"
+echo -e "\n\n*** Installing MongoDB 4.2\n"
 
-apt-get install -y npm
-npm install -g n
-n stable
-
-npm install -g gulp
-npm install -g nodemon
-
-npm install pm2@latest -g
-pm2 unstartup
-pm2 startup ubuntu -u zero --hp /home/zero
-
-echo -e "\n\n*** Installing MongoDB\n"
 wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | apt-key add -
 echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-4.2.list
 apt-get update
