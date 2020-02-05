@@ -1,4 +1,4 @@
-apt install -y libpam0g-dev libselinux1-dev
+apt install -y libpam0g-dev libselinux1-dev zlib1g-dev
 
 wget -c https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-8.0p1.tar.gz
 tar -xzf openssh-8.0p1.tar.gz
