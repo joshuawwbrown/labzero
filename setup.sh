@@ -60,9 +60,8 @@ apt-get install -y build-essential
 
 echo -e "\n\n*** CERTBOT & SSL\n"
 
-add-apt-repository -y ppa:certbot/certbot
-apt-get -y update
-apt-get -y install certbot
+apt-get -y install install letsencrypt
+systemctl status certbot.timer
 
 cp /root/labzero/timeStamp.sh /root
 chmod a+x /root/timeStamp.sh
@@ -70,14 +69,13 @@ cp /root/labzero/dhparam.pem /etc/ssl/dhparam.pem
 
 echo -e "\n\n*** Installing NPM, NODE, PM2\n"
 
-apt-get install -y npm
-npm install -g n
-n stable
+curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+apt-get install -y nodejs
 
-npm install -g gulp
-npm install -g nodemon
+npm i -g pm2@latest
+npm i -g gulp
+npm i -g nodemon
 
-npm install pm2@latest -g
 pm2 unstartup
 pm2 startup ubuntu -u zero --hp /home/zero
 
