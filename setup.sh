@@ -60,7 +60,7 @@ apt-get install -y build-essential
 
 echo -e "\n\n*** CERTBOT & SSL\n"
 
-apt-get -y install install letsencrypt
+apt-get -y install letsencrypt
 systemctl status certbot.timer
 
 cp /root/labzero/timeStamp.sh /root
