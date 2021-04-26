@@ -15,6 +15,8 @@ echo -e "\n\n*** NTP\n"
 apt-get install -y ntp
 ntpq -p
 
+apt-get install -y net-tools
+
 echo -e "\n\n*** FAIL2BAN\n"
 apt-get install -y fail2ban
 
