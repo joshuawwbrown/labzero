@@ -29,31 +29,18 @@ yes | ufw enable
 ufw status
 
 echo -e "\n\n*** NGINX\n"
+apt install wget gnupg2 ca-certificates lsb-release ubuntu-keyring software-properties-common -y
+wget -O- https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg
+echo deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/ubuntu `lsb_release -cs` nginx | tee /etc/apt/sources.list.d/nginx-stable.list
+echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" | tee /etc/apt/preferences.d/99nginx
 
-touch /etc/apt/sources.list.d/nginx.list
-echo 'deb [arch=amd64] http://nginx.org/packages/mainline/ubuntu/ bionic nginx' >> /etc/apt/sources.list.d/nginx.list
-echo 'deb-src http://nginx.org/packages/mainline/ubuntu/ bionic nginx' >> /etc/apt/sources.list.d/nginx.list
-
-wget http://nginx.org/keys/nginx_signing.key
-apt-key add nginx_signing.key
-apt -y update
 apt -y remove nginx nginx-common nginx-full nginx-core
-
 apt -y install nginx
 nginx -v
 
 cp /root/labzero/dhparam.pem /etc/ssl/dhparam.pem
 
-echo -e "\n\n*** AUTO_UPDATES\n"
-apt install -y unattended-upgrades
-echo 'APT::Periodic::Update-Package-Lists "1";
-APT::Periodic::Download-Upgradeable-Packages "1";
-APT::Periodic::AutocleanInterval "7";
-APT::Periodic::Unattended-Upgrade "1";'\
-> /etc/apt/apt.conf.d/10periodic
-
-echo -e ""
-cat /etc/apt/apt.conf.d/10periodic
+dpkg-reconfigure -plow unattended-upgrades
 
 echo -e "\n\n*** DEV TOOLS\n"
 apt-get install -y git-core;
@@ -61,9 +48,6 @@ apt-get install -y libssl-dev;
 apt-get install -y build-essential
 
 echo -e "\n\n*** CERTBOT & SSL\n"
-
-apt-get -y install letsencrypt
-systemctl status certbot.timer
 
 cp /root/labzero/timeStamp.sh /root
 chmod a+x /root/timeStamp.sh
@@ -79,14 +63,14 @@ npm i -g pm2@latest
 npm i -g gulp
 npm i -g nodemon
 
-pm2 unstartup
-pm2 startup ubuntu -u zero --hp /home/zero
-
 echo -e "\n\n*** Creating Users and Groups\n"
 groupadd zero
 useradd -s /bin/bash -m -g zero zero
 useradd -s /bin/bash -M -g zero zero-server
 usermod -a -G www-data zero
+
+pm2 unstartup
+pm2 startup ubuntu -u zero --hp /home/zero
 
 mkdir /home/zero/.ssh
 cp /root/.ssh/authorized_keys /home/zero/.ssh/authorized_keys
