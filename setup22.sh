@@ -31,7 +31,7 @@ ufw status
 echo -e "\n\n*** NGINX\n"
 apt install wget gnupg2 ca-certificates lsb-release ubuntu-keyring software-properties-common -y
 wget -O- https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg
-echo deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/ubuntu `lsb_release -cs` nginx | tee /etc/apt/sources.list.d/nginx-stable.list
+echo deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx | sudo tee /etc/apt/sources.list.d/nginx-mainline.list
 echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" | tee /etc/apt/preferences.d/99nginx
 
 apt -y remove nginx nginx-common nginx-full nginx-core
