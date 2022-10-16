@@ -68,6 +68,7 @@ groupadd zero
 useradd -s /bin/bash -m -g zero zero
 useradd -s /bin/bash -M -g zero zero-server
 usermod -a -G www-data zero
+usermod -a -G zero www-data
 
 pm2 unstartup
 pm2 startup ubuntu -u zero --hp /home/zero
