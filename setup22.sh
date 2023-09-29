@@ -52,11 +52,6 @@ echo -e "\n\n*** CERTBOT & SSL\n"
 cp /root/labzero/timeStamp.sh /root
 chmod a+x /root/timeStamp.sh
 
-echo -e "\n\n*** Installing Node\n"
-
-curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
-apt-get install -y nodejs
-
 echo -e "\n\n*** Installing pm2, gulp, nodemon\n"
 
 npm i -g pm2@latest
