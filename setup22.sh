@@ -78,7 +78,7 @@ cp /root/.ssh/authorized_keys /home/zero/.ssh/authorized_keys
 chown -R zero.zero /home/zero/.ssh 
 chmod 700 /home/zero/.ssh
 chmod 600 /home/zero/.ssh/authorized_keys
-su -c "ssh-keygen -t rsa -N \"\" -f ~/.ssh/id_rsa" -s /bin/sh zero
+su -c "ssh-keygen -t ed25519 -N \"\" -f ~/.ssh/id_ed25519" -s /bin/sh zero
 
 echo -e "\n\n*** Adding Profile Shortcuts\n"
 echo -e "\n\nalias zero=\"su - zero\"\n" >> .profile
