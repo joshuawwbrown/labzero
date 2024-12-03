@@ -44,14 +44,11 @@ apt-get install -y build-essential
 
 echo -e "\n\n*** NODE JS\n"
 
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
-nvm install 22
-
-echo -e "Node version:"
+sudo apt-get install -y curl
+curl -fsSL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh
+sudo -E bash nodesource_setup.sh
+sudo apt-get install -y nodejs
 node -v
-
-echo -e "NPM version:"
-npm -v
 
 cp /root/labzero/timeStamp.sh /root
 chmod a+x /root/timeStamp.sh
