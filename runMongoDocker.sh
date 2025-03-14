@@ -1,11 +1,57 @@
 #!/bin/bash
 
-# Written May, 2020 - Currently tested on MacOs 14.5
+# MONGO DOCKER IS DANGEROUS WITHOUT THIS PATCH!
+# By defual tit will open the mongo port to the world!
+# Improved version will make sure that IPtables does not get messed with on linux systems!
 
 CONTAINER_NAME="mongo-dev"
 VOLUME_NAME="mongo-dev-data"
 MONGO_IMAGE="mongo:latest"
 MONGO_PORT="27017:27017"
+MONGO_ROOT_PW="ak882jsn_uy260jls"
+MONGO_ROOT_USER="zadmin"
+DAEMON_CONFIG="/etc/docker/daemon.json"
+DEFAULT_CONTENT="{"iptables": false}"
+
+set -x
+
+# If the file doesn't exist, create it with the default content.
+if [ ! -f "$DAEMON_CONFIG" ]; then
+    echo "$DEFAULT_CONTENT" > "$DAEMON_CONFIG" || { 
+        echo "Error: Failed to create file $DAEMON_CONFIG" >&2; 
+        exit 1; 
+    }
+else
+    # If the file exists, check if it already contains the key-value pair.
+    if grep -q '"iptables":[[:space:]]*false' "$DAEMON_CONFIG"; then
+        # The required key-value pair is present; nothing to do.
+	echo "File $DAEMON_CONFIG is correct"
+    else
+        # Try to update the file.
+        if command -v jq >/dev/null 2>&1; then
+            TMP=$(mktemp) || { 
+                echo "Error: Could not create a temporary file" >&2; 
+                exit 1; 
+            }
+            if ! jq '.iptables = false' "$DAEMON_CONFIG" > "$TMP"; then
+                echo "Error: Failed to modify file $DAEMON_CONFIG" >&2
+                rm -f "$TMP"
+                exit 1
+            fi
+            if ! mv "$TMP" "$DAEMON_CONFIG"; then
+                echo "Error: Failed to update file $DAEMON_CONFIG" >&2
+                rm -f "$TMP"
+                exit 1
+            fi
+        else
+            # Fallback: rewrite the file with default content (may override other modifications).
+            echo "$DEFAULT_CONTENT" > "$DAEMON_CONFIG" || { 
+                echo "Error: Failed to update file $DAEMON_CONFIG" >&2; 
+                exit 1; 
+            }
+        fi
+    fi
+fi
 
 # Insure docker is running
 
@@ -47,5 +93,6 @@ if [ -n "$container_exists" ]; then
 else
     # Container does not exist, run a new one
     echo "Container does not exist, running a new one..."
-    docker run -d -p $MONGO_PORT --name $CONTAINER_NAME -v $VOLUME_NAME:/data/db $MONGO_IMAGE
+    docker run --name $CONTAINER_NAME -d -p $MONGO_PORT -e MONGO_INITDB_ROOT_USERNAME=$MONGO_ROOT_USER -e MONGO_INITDB_ROOT_PASSWORD=$MONGO_ROOT_PW -v $VOLUME_NAME:/data/db $MONGO_IMAGE 
+#    docker run -d -p $MONGO_PORT --name $CONTAINER_NAME -v $VOLUME_NAME:/data/db $MONGO_IMAGE
 fi
