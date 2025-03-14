@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # MONGO DOCKER IS DANGEROUS WITHOUT THIS PATCH!
-# By defual tit will open the mongo port to the world!
+# By default DOCKER ON LINUX will open the mongo port to the world!
 # Improved version will make sure that IPtables does not get messed with on linux systems!
 
 CONTAINER_NAME="mongo-dev"
