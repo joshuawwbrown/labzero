@@ -82,6 +82,29 @@ chmod 700 /home/zero/.ssh
 chmod 600 /home/zero/.ssh/authorized_keys
 su -c "ssh-keygen -t ed25519 -N \"\" -f ~/.ssh/id_ed25519" -s /bin/sh zero
 
+echo -e "\n\n*** Setting up logrotate for pm2\n"
+
+pm2 logrotate -u zero
+
+LOGROTATE_CONFIG="/etc/logrotate.d/pm2-zero"
+
+cat << 'EOF' > $LOGROTATE_CONFIG
+/home/zero/.pm2/pm2.log /home/zero/.pm2/logs/*.log {
+  su zero zero
+  rotate -1
+  size 10M
+  maxage 400
+  missingok
+  notifempty
+  nocompress
+  copytruncate
+  dateext
+  create 0640 zero zero
+  olddir /home/zero/.pm2/logs/old
+  createolddir 0750 zero zero
+}
+EOF
+
 echo -e "\n\n*** Adding Profile Shortcuts\n"
 echo -e "\n\nalias zero=\"su - zero\"\n" >> .profile
 
