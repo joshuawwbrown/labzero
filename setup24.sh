@@ -32,7 +32,6 @@ echo -e "\n\n*** NGINX\n"
 apt -y remove nginx nginx-common nginx-full nginx-core
 apt -y install nginx
 nginx -v
-
 cp /root/labzero/dhparam.pem /etc/ssl/dhparam.pem
 
 dpkg-reconfigure -plow unattended-upgrades
@@ -49,6 +48,13 @@ curl -fsSL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh
 sudo -E bash nodesource_setup.sh
 sudo apt-get install -y nodejs
 node -v
+
+echo -e "\n\n*** MONGOSH\n"
+
+wget -qO- https://www.mongodb.org/static/pgp/server-8.0.asc | sudo tee /etc/apt/trusted.gpg.d/server-8.0.asc
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu noble/mongodb-org/8.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
+sudo apt-get update
+sudo apt-get install -y mongodb-mongosh
 
 cp /root/labzero/timeStamp.sh /root
 chmod a+x /root/timeStamp.sh
