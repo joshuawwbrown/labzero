@@ -1,0 +1,95 @@
+server {
+
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    server_name CLIENTNAME.nocsolutionscrm.com;
+
+    gzip off;
+
+    root /var/www/html;
+    index index.html;
+
+    client_max_body_size 50M;
+
+    ssl_certificate     /etc/ssl/certs/nginx.crt;
+    ssl_certificate_key /etc/ssl/private/nginx.key;
+    ssl_dhparam         /etc/ssl/dhparam.pem;
+
+    if ($http_cf_connecting_ip = "") {
+        return 420;
+    }
+
+    location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header Host $http_host;
+        
+        
+        try_files $uri $uri/ =404;
+        proxy_intercept_errors on;
+        error_page 404 = @http_server;
+        error_page 403 = @http_server;
+
+    }
+
+    location /api- {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header Host $http_host;
+        
+        try_files $uri $uri/ =404;
+        proxy_intercept_errors on;
+        error_page 404 = @api_server;
+        error_page 403 = @api_server;
+    }
+
+    location @http_server {
+        proxy_pass http://127.0.0.1:8001;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header Host $http_host;
+    }
+
+    location @api_server {
+        proxy_pass http://127.0.0.1:8002;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header Host $http_host;
+    }
+}
+
+server {
+	# Longest match wins.
+	# default_server should NOT specify a server name!
+	# it picks everything that does not match a
+	# specific server.
+
+    listen 443 ssl default_server;
+    listen [::]:443 ssl default_server;
+
+    ssl_certificate     /etc/ssl/certs/nginx.crt;
+    ssl_certificate_key /etc/ssl/private/nginx.key;
+    ssl_dhparam         /etc/ssl/dhparam.pem;
+
+    root /var/www/html;
+    index index.html;
+
+    if ($http_cf_connecting_ip = "") {
+        return 420;
+    }
+
+    location @short_urls_server {
+        proxy_pass http://127.0.0.1:8004;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header Host $http_host;
+    }
+    location / {
+	    try_files $uri $uri/ =404;
+
+	    proxy_intercept_errors on;
+	    error_page 404 = @short_urls_server;
+	    error_page 403 = @short_urls_server;
+    }
+}
