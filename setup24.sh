@@ -41,6 +41,7 @@ apt-get install -y git-core;
 apt-get install -y libssl-dev;
 apt-get install -y build-essential
 apt-get install -y rsync
+apt-get install -y cron
 
 echo -e "\n\n*** NODE JS\n"
 
