@@ -40,6 +40,7 @@ echo -e "\n\n*** DEV TOOLS\n"
 apt-get install -y git-core;
 apt-get install -y libssl-dev;
 apt-get install -y build-essential
+apt-get install -y rsync
 
 echo -e "\n\n*** NODE JS\n"
 
